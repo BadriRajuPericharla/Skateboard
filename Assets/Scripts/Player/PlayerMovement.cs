@@ -18,7 +18,20 @@ public class PlayerMovement : MonoBehaviour
         rb= GetComponent<Rigidbody>();
         rb.freezeRotation=true;
         MoveDirection=transform.forward;
-
+        
+        int level=PlayerPrefs.GetInt("Level",0);
+        if (level==0)
+        {
+            speed=10f;
+        }
+        else if (level == 1)
+        {
+            speed=12;
+        }
+        else if (level == 2)
+        {
+            speed=14;
+        }
     }
 
     
