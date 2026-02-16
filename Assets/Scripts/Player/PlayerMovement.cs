@@ -4,91 +4,91 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float ExtraGravity=30f;
-    [SerializeField] float JumpForce=8f;
-    [SerializeField]float speed=10f;
-    
+    [SerializeField] float ExtraGravity = 20f;
+    [SerializeField] float JumpForce = 8f;
+    [SerializeField] float speed = 10f;
+
+    [SerializeField] float turnSpeed = 100f;      
+    [SerializeField] float maxTurnAngle = 90f;   
+
     Rigidbody rb;
     Vector3 MoveDirection;
-    [SerializeField] float turnSpeed = 5f;
-    float targetY;
-    
 
-    bool isGrounded=true;
-    int StepIndex=0;
-
+    float targetY = 0f;
+    bool isGrounded = true;
 
     void Start()
     {
-        targetY = transform.eulerAngles.y;
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
 
-        rb= GetComponent<Rigidbody>();
-        rb.freezeRotation=true;
-        MoveDirection=transform.forward;
-
-        int level=PlayerPrefs.GetInt("Level",0);
-        if (level==0)
-        {
-            speed=10f;
-        }
-        else if (level == 1)
-        {
-            speed=12;
-        }
-        else if (level == 2)
-        {
-            speed=14;
-        }
-    }
-
-    
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.UpArrow)&& isGrounded)
-        {
-            rb.AddForce(Vector3.up *JumpForce,ForceMode.Impulse);
-            isGrounded=false;
-        }
-        if (StepIndex==0 && Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            targetY -= 90f;
-            StepIndex=1;
-        }
-
-        if (StepIndex==1 && Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            targetY += 90f;
-            StepIndex=0;
-        }
-
-        
-        
-    }
-    void FixedUpdate()
-    {
-        float newY = Mathf.LerpAngle(transform.eulerAngles.y,targetY,turnSpeed * Time.fixedDeltaTime);
-        transform.rotation = Quaternion.Euler(0, newY, 0);
         MoveDirection = transform.forward;
 
+        int level = PlayerPrefs.GetInt("Level", 0);
+
+        if (level == 0)
+        {
+           speed = 10f; 
+        }
+            
+        else if (level == 1)
+        {
+            speed = 12f;
+        }
+            
+        else if (level == 2)
+        {
+            speed = 14f;
+        }
+            
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        {
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            isGrounded = false;
+        }
+
+        
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            targetY -= turnSpeed * Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            targetY += turnSpeed * Time.deltaTime;
+        }
+
+      
+        targetY = Mathf.Clamp(targetY, -maxTurnAngle, maxTurnAngle);
+    }
+
+    void FixedUpdate()
+    {
+        transform.rotation = Quaternion.Euler(0f, targetY, 0f);
+
+        MoveDirection = transform.forward;
 
         rb.AddForce(Vector3.down * ExtraGravity, ForceMode.Acceleration);
+
         Vector3 finalVelocity = MoveDirection.normalized * speed;
         finalVelocity.y = rb.velocity.y;
+
         rb.velocity = finalVelocity;
     }
+
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isGrounded=true;
-        }
+        if (collision.gameObject.CompareTag("Ground"))
+            isGrounded = true;
     }
-    private void OnTriggerEnter(Collider other)
+
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Coin"))
-        {
             other.gameObject.SetActive(false);
-        }
-    
     }
 }
