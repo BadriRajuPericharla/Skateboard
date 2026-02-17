@@ -7349,6 +7349,7 @@ GameObject:
   - component: {fileID: 611638684}
   - component: {fileID: 611638683}
   - component: {fileID: 611638682}
+  - component: {fileID: 611638687}
   - component: {fileID: 611638681}
   m_Layer: 0
   m_Name: Player
@@ -7396,10 +7397,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d234311bb0cd77042be8655a3205e398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExtraGravity: 30
+  ExtraGravity: 20
   JumpForce: 10
   speed: 10
-  turnSpeed: 5
+  turnSpeed: 100
+  maxTurnAngle: 90
+  GameOver: {fileID: 1855946387}
 --- !u!136 &611638683
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7490,6 +7493,20 @@ Transform:
   - {fileID: 177794946}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &611638687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611638680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b1aaf4f56c0f604987f6be506d37b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Coins: {fileID: 614541620}
+  Score: {fileID: 1492384876}
 --- !u!1 &614541617
 GameObject:
   m_ObjectHideFlags: 0
@@ -10002,7 +10019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1778043280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10023,6 +10040,7 @@ MonoBehaviour:
   GameOver_Score: {fileID: 0}
   GameOver_Coins: {fileID: 0}
   LevelsPannel: {fileID: 1838552324}
+  Player: {fileID: 611638686}
   player: {fileID: 611638682}
 --- !u!114 &1778043281
 MonoBehaviour:
