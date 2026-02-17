@@ -87,7 +87,7 @@ public class TileManager : MonoBehaviour
         nextSpawnRotation = exitPoint.rotation;
 
 
-         coinSpawner.SpawnCoinsOnTile(tile);
+        coinSpawner.SpawnCoinsOnTile(tile);
      
     }
 
